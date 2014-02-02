@@ -18,3 +18,6 @@ IDE:
 * https://blogs.oracle.com/geertjan/entry/phaser_and_netbeans_ide
 * https://blogs.oracle.com/geertjan/entry/phaser_and_netbeans_ide_part
 * https://blogs.oracle.com/geertjan/entry/phaser_in_netbeans_ide_part
+* 
+Examples:
+* http://www.emanueleferonato.com/2013/12/17/create-web-and-mobile-html5-games-with-phaser-framework/
