@@ -4,6 +4,7 @@ Einstieg:
 * http://gametest.mobi/phaser/examples/ 
 * http://www.photonstorm.com/phaser/tutorial-making-your-first-phaser-game
 * http://www.antonoffplus.com/coding-an-html5-game-for-30-minutes-or-an-introduction-to-the-phaser-framework/
+* http://jessefreeman.com/game-dev/building-a-html5-game-with-phaser/
 
 Api:
 
