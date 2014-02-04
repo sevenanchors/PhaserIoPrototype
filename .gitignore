@@ -1,0 +1,9 @@
+# Development
+.project
+.settings
+*.ipr
+*.iws
+*.iml
+.idea
+.vagrant
+.rvmrc
