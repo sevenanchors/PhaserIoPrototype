@@ -1,5 +1,7 @@
-to use the just enter:
 
+to use the just enter:
+ 
+    git submodules update --init
     vagrant up
 
 Tutorials:
