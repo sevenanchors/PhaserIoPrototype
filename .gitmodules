@@ -10,3 +10,6 @@
 [submodule "puppet/modules/concat"]
 	path = puppet/modules/concat
 	url = git@github.com:puppetlabs/puppetlabs-concat.git
+[submodule "phaser"]
+	path = phaser
+	url = git@github.com:photonstorm/phaser.git
