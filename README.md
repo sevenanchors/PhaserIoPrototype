@@ -1,8 +1,29 @@
+Setup
+=====
 
-to use the just enter:
- 
-    git submodules update --init
-    vagrant up
+* install vagrant
+* install virtualbox
+* install git
+* create an ssh key and add them to github (http://danielhuesken.de/git-fur-windows-installieren-und-ssh-keys-nutzen/)
+* clone the project
+* jump into the directory
+* now type
+
+	git submodules update --init
+
+* after that just
+	
+	vagrant up
+
+* set in your hosts file:
+
+	192.168.33.10 www.phaser-prototype.com
+    
+* open http://www.phaser-prototype.com/examples/
+
+Guides
+======
+
 
 Tutorials:
 * http://gamedevelopment.tutsplus.com/articles/how-to-learn-the-phaser-html5-game-engine--gamedev-13643
