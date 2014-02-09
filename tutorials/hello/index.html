@@ -2,32 +2,147 @@
 <html>
     <head>
         <meta charset="UTF-8" />
-        <title>hello phaser!</title>
+        <title>pong </title>
         <script src="../phaser.min.js"></script>
     </head>
     <body>
 
     <script type="text/javascript">
 
-    window.onload = function() {
+        var game = new Phaser.Game(
+            480,
+            640,
+            Phaser.AUTO, // aut. selected rendering
+            '', // parent DOM element
+            { preload: preload, create: create, update: update } // game main features binding
+        );
+        
+        
+        // game vars
+        var playerBet;
+        var computerBet;
+        var ball;
 
-        var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create });
+        var computerBetSpeed = 190;
+        var ballSpeed = 300;
+        
+        var ballReleased = false;
 
-        function preload () {
-
-            game.load.image('logo', 'phaser.png');
+        // load resources
+        function preload() {
+            game.load.image('bet', 'assets/bet.png');
+            game.load.image('ball', 'assets/ball.png');
+            game.load.image('background', 'assets/background.jpg');
+        }
+        
+        // initialize game
+        function create() {
+            // full size background
+            game.add.tileSprite(0, 0, 480, 640, 'background');
+            
+            // create bets
+            playerBet = createBet(game.world.centerX, 620);
+            computerBet = createBet(game.world.centerX, 20);
+            
+            // create ball
+            ball = game.add.sprite(game.world.centerX, game.world.centerY, 'ball');
+            ball.anchor.setTo(0.5, 0.5);
+            ball.body.collideWorldBounds = true; // cant leave the playground
+            ball.body.bounce.setTo(1, 1); // mirrors the directions of movement on bounce
+            
+            // game start event
+            game.input.onDown.add(releaseBall, this);
 
         }
+    
+        // gameloop 60 times/second
+        function update () {
+            // player's racket
+            playerBet.x = game.input.x;
+    
+            var playerBetHalfWidth = playerBet.width / 2;
+    
+            if (playerBet.x < playerBetHalfWidth) {
+                playerBet.x = playerBetHalfWidth;
+            } else if (playerBet.x > game.width - playerBetHalfWidth) {
+                playerBet.x = game.width - playerBetHalfWidth;
+            }
+    
+            // control the computer's racket (ai)
+            if(computerBet.x - ball.x < -15) {
+                computerBet.body.velocity.x = computerBetSpeed;
+            } else if(computerBet.x - ball.x > 15) {
+                computerBet.body.velocity.x = -computerBetSpeed;
+            } else {
+                computerBet.body.velocity.x = 0;
+            }
+    
+            // check and process the collision ball and racket
+            game.physics.collide(ball, playerBet, ballHitsBet, null, this);
+            game.physics.collide(ball, computerBet, ballHitsBet, null, this);
+            
+            // check to see if someone has scored a goal
+            checkGoal();
+        }
+        
+        // create bets
+        function createBet(x, y) {
+            var bet = game.add.sprite(x, y, 'bet');
+            bet.anchor.setTo(0.5, 0.5); // anchor is the middle of the screen
+            bet.body.collideWorldBounds = true; // cant leave the playground
+            bet.body.bounce.setTo(1, 1); // mirrors the directions of movement on bounce
+            bet.body.immovable = true; // not moveable
+    
+            return bet;
+        }
+        
+        // starts the ball movement
+        function releaseBall() {
+            if (!ballReleased) { // ball is not running
+                ball.body.velocity.x = ballSpeed; // defines the movement direction
+                ball.body.velocity.y = -ballSpeed;
+                ballReleased = true;
+            }
+        }
+        
+        // collision check
+        function ballHitsBet (_ball, _bet) {
+            var diff = 0;
 
-        function create () {
-
-            var logo = game.add.sprite(game.world.centerX, game.world.centerY, 'logo');
-            logo.anchor.setTo(0.5, 0.5);
-
+            // if ball is in the left hand side on the racket
+            if (_ball.x < _bet.x) {
+                diff = _bet.x - _ball.x;
+                _ball.body.velocity.x = (-10 * diff);
+            // if ball is in the right hand side on the racket
+            } else if (_ball.x > _bet.x) {
+                diff = _ball.x -_bet.x;
+                _ball.body.velocity.x = (10 * diff);
+            // the ball hit the center of the racket, let's add a little bit of a tragic accident(random) of his movement
+            } else {
+                _ball.body.velocity.x = 2 + Math.random() * 8;
+            }
+        }
+        
+        // ball lefts field
+        function checkGoal() {
+            if (ball.y < 15) {
+                setBall();
+            } else if (ball.y > 625) {
+                setBall();
+            }
         }
 
-    };
-
+        // reset ball position and speed
+        function setBall() {
+            if (ballReleased) {
+                ball.x = game.world.centerX;
+                ball.y = game.world.centerY;
+                ball.body.velocity.x = 0;
+                ball.body.velocity.y = 0;
+                ballReleased = false;
+            }
+        }  
+        
     </script>
 
     </body>
