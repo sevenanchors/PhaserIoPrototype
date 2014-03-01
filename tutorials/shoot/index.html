@@ -1,0 +1,140 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>shoot</title>
+        <script src="../phaser.min.js"></script>
+    </head>
+    <body>
+
+    <script type="text/javascript">
+
+        var game = new Phaser.Game(
+            800,
+            480,
+            Phaser.AUTO, // aut. selected rendering
+            '', // parent DOM element
+            { preload: preload, create: create, update: update } // game main features binding
+        );
+        
+        var player;
+        var keyboard;
+    
+        var weaponId = 1;
+        var fire = false;
+        var bulletGroup;
+        var shotDelayTime = 0;
+        var shotDelay = 200;
+    
+        // load resources
+        function preload() {
+            game.load.atlasJSONArray('entities', 'assets/entities.png', 'assets/entities.txt');
+        }
+        
+        // initialize game
+        function create() {
+            player = game.add.sprite(game.world.width * .5 - 50, 200, "entities");
+            player.body.drag.x = 900;
+            player.body.maxVelocity.x = 250;
+            player.anchor.setTo(.5, .5);
+            
+            player.animations.add(
+                'idle',
+                [
+                'player-idle-1.png'
+                ],
+                10, false, false);
+            
+            player.animations.add(
+                'fire',
+                [
+                'player-fire-1-00.png',
+                'player-fire-1-01.png',
+                'player-fire-1-02.png'
+                ],
+                10, true, false);
+        
+            player.animations.add(
+                'walk',
+                [
+                'player-walk-1-00.png', 
+                'player-walk-1-01.png', 
+                'player-walk-1-02.png', 
+                'player-walk-1-03.png', 
+                'player-walk-1-04.png', 
+                'player-walk-1-05.png', 
+                'player-walk-1-06.png', 
+                'player-walk-1-07.png'
+                ],
+                10, true, false);
+        
+            player.animations.play('idle');
+            
+            keyboard = game.input.keyboard;
+
+            bulletGroup = game.add.group();
+            bulletGroup.createMultiple(10);
+            
+            zombieGroup = game.add.group();
+            zombieGroup.createMultiple(10);
+        }
+    
+        // gameloop 60 times/second
+        function update () {
+            if(keyboard.isDown(Phaser.Keyboard.RIGHT)) {
+                player.body.velocity.x += 100;
+                player.scale.x = 1;
+                player.flipped = false;
+            } else if(keyboard.justReleased(Phaser.Keyboard.RIGHT)) {
+                player.body.velocity.x = 0;
+            }
+            
+            if(keyboard.isDown(Phaser.Keyboard.LEFT)) {
+                player.body.velocity.x -= 30;
+                player.scale.x = -1;
+                player.flipped = true;
+            } else if(keyboard.justReleased(Phaser.Keyboard.LEFT)) {
+                player.body.velocity.x = 0;
+            }
+            
+            if (keyboard.isDown(Phaser.Keyboard.SPACEBAR)) {
+                fire = true; 
+            } else if (keyboard.justReleased(Phaser.Keyboard.SPACEBAR)) {
+                fire = false;
+            }
+                        
+            if(fire) {
+                    console.log(game.time); 
+               shotDelayTime += game.time.delta;      
+               if(shotDelayTime > shotDelay) {
+                   createBullet();
+                   shotDelayTime = 0;
+               }
+        
+               player.body.velocity.x = player.body.acceleration.x = 0;
+            }
+            
+            if(Math.abs(player.body.velocity.x) != 0) {
+                player.animations.play('walk');
+            } else if(fire) {
+                player.animations.play("fire");
+            } else {
+                player.animations.play('idle');
+            }
+        }
+        
+         function createBullet() {
+            var bullet = bulletGroup.getFirstDead();
+            bullet.exists = true;
+            bullet.x = player.x + (player.flipped ? 0 : player.width);
+            bullet.y = player.y + 25;
+            bullet.flipped = player.flipped;
+            bullet.velocity.x = bullet.flipped ? -600 : 600;
+            bullet.loadGraphic("entities");
+            bullet.animations.frameName = "bullet-gun.png";
+        }
+        
+    </script>
+
+    </body>
+</html>
