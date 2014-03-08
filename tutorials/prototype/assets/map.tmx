@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="34" height="26" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" name="Dungeon_A1" tilewidth="32" tileheight="32">
+  <image source="../../../../../../Program Files (x86)/Common Files/Enterbrain/RGSS3/RPGVXAce/Graphics/Tilesets/Dungeon_A1.png" width="512" height="384"/>
+ </tileset>
+ <layer name="background" width="34" height="26">
+  <data encoding="base64" compression="zlib">
+   eJzt16ENACAMBdEblbkIorojoBiNJiyAqzlx+ZXPdsLJ5haM2thAZ6lDhw4dOnTo0KFDhw4dH476YSLf3dasLheGrKs=
+  </data>
+ </layer>
+ <layer name="objects" width="34" height="26">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgF9ADuQOwxCMwMB+IIKruDFmYSAxyB2IkKaigFgUAcRAU1gwUYDrQDcAB6xCUxYCjF5WADgzVtkQpoUZ6TYy6tyl5qmIse17QKM1IBtcNsuKTpkQyoXbeQax4pdQsx+YkedRWl+Wm4lgsDAQD8aQ81
+  </data>
+ </layer>
+</map>
